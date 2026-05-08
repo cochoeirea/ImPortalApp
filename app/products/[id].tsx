@@ -108,7 +108,7 @@ export default function ProductDetailScreen() {
   if (Platform.OS === 'web') {
     return (
       <SafeAreaView style={styles.wrapper} edges={['bottom']}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={Platform.OS === 'web'}>
           <View style={styles.webTopRow}>
             <View style={styles.webImageContainer}>
               <Image
@@ -139,7 +139,7 @@ export default function ProductDetailScreen() {
 
   return (
     <SafeAreaView style={styles.wrapper} edges={['bottom']}>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={Platform.OS === 'web'}>
         <View style={styles.imageContainer}>
           <Image
             source={{ uri: product.image }}

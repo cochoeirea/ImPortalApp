@@ -231,7 +231,7 @@ export default function ProductsScreen() {
         key={numColumns}
         contentContainerStyle={styles.list}
         columnWrapperStyle={Platform.OS === 'web' ? styles.rowWeb : styles.row}
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={Platform.OS === 'web'}
         keyboardShouldPersistTaps="handled"
         ListHeaderComponent={
           <View>
