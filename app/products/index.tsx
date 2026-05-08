@@ -174,22 +174,22 @@ export default function ProductsScreen() {
     }
   }, [navigation, selectedCategory, categories, handleLogout]);
 
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     try {
       const data = await fetchProducts();
       setProducts(data);
       setError('');
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Something went wrong');
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadProducts();
-  }, []);
+  }, [loadProducts]);
 
   const filtered = useMemo(
     () =>

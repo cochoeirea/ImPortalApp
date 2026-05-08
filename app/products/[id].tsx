@@ -28,10 +28,17 @@ export default function ProductDetailScreen() {
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    fetchProduct(Number(id))
-      .then(setProduct)
-      .catch((e: any) => setError(e.message))
-      .finally(() => setLoading(false));
+    const load = async () => {
+      try {
+        const data = await fetchProduct(Number(id));
+        setProduct(data);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Something went wrong');
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
 
     return () => {
       if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -171,7 +178,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.background,
   },
-  // Mobile image
   imageContainer: {
     height: 280,
     backgroundColor: COLORS.surfaceElevated,
@@ -183,12 +189,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  // Mobile content
   content: {
     padding: SPACING.lg,
     paddingBottom: SPACING.xxl,
   },
-  // Web layout
   webTopRow: {
     flexDirection: 'row',
     padding: SPACING.lg,
@@ -214,7 +218,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginTop: SPACING.md,
   },
-  // Shared
   categoryBadge: {
     alignSelf: 'flex-start',
     backgroundColor: COLORS.primaryDark,

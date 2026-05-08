@@ -37,8 +37,8 @@ export default function LoginScreen() {
       const token = await loginUser(username.trim(), password.trim());
       login(token);
       router.replace('/products');
-    } catch (e: any) {
-      setError(e.message || 'Login failed. Please try again.');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, ReactNode } from 'react';
 import { Product } from '../types';
 
 export interface CartItem {
@@ -25,7 +25,7 @@ const CartContext = createContext<CartContextType>({
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  const addItem = (product: Product, quantity: number) => {
+  const addItem = useCallback((product: Product, quantity: number) => {
     setItems((prev) => {
       const existing = prev.find((i) => i.product.id === product.id);
       if (existing) {
@@ -37,21 +37,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { product, quantity }];
     });
-  };
+  }, []);
 
-  const removeItem = (productId: number) => {
+  const removeItem = useCallback((productId: number) => {
     setItems((prev) => prev.filter((i) => i.product.id !== productId));
-  };
+  }, []);
 
-  const clearCart = () => setItems([]);
+  const clearCart = useCallback(() => setItems([]), []);
 
-  const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
-
-  return (
-    <CartContext.Provider value={{ items, addItem, removeItem, clearCart, totalItems }}>
-      {children}
-    </CartContext.Provider>
+  const totalItems = useMemo(
+    () => items.reduce((sum, i) => sum + i.quantity, 0),
+    [items]
   );
+
+  const value = useMemo(
+    () => ({ items, addItem, removeItem, clearCart, totalItems }),
+    [items, addItem, removeItem, clearCart, totalItems]
+  );
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
 export const useCart = () => useContext(CartContext);
