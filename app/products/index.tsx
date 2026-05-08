@@ -233,6 +233,7 @@ export default function ProductsScreen() {
         columnWrapperStyle={Platform.OS === 'web' ? styles.rowWeb : styles.row}
         showsVerticalScrollIndicator={Platform.OS === 'web'}
         keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
         ListHeaderComponent={
           <View>
             {/* Mobile: barra de búsqueda siempre visible (en web vive en el navbar) */}
