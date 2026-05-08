@@ -157,6 +157,16 @@ const styles = StyleSheet.create({
   },
   form: {
     gap: SPACING.xs,
+    ...Platform.select({
+      web: {
+        borderWidth: 1,
+        borderColor: COLORS.border,
+        borderRadius: RADIUS.lg,
+        backgroundColor: COLORS.surface,
+        padding: SPACING.lg,
+        marginTop: -SPACING.lg,
+      },
+    }),
   },
   label: {
     fontSize: 13,
