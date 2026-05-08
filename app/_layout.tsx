@@ -56,7 +56,7 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <CartProvider>
         <AuthProvider>
-          <StatusBar style="light" />
+          <StatusBar style="dark" />
           <RootLayoutNav />
         </AuthProvider>
       </CartProvider>

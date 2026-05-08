@@ -53,7 +53,7 @@ export default function CategoryModal({ visible, categories, selected, onSelect,
             const isSelected = item === selected;
             const label = item
               ? item.charAt(0).toUpperCase() + item.slice(1)
-              : 'All';
+              : 'All Categories';
 
             return (
               <TouchableOpacity
