@@ -14,6 +14,8 @@ const baseHeaderOptions = {
   headerStyle,
   headerTintColor: COLORS.text,
   headerTitleStyle: { fontWeight: 'bold' as const },
+  headerTitleAlign: (Platform.OS === 'web' ? 'left' : 'center') as 'left' | 'center',
+  headerBackTitle: '',
   headerShadowVisible: false,
   headerRightContainerStyle: { paddingRight: 12 },
   headerLeftContainerStyle: { paddingLeft: 12 },
