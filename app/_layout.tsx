@@ -1,24 +1,65 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AuthProvider } from '../context/AuthContext';
+import { CartProvider } from '../context/CartContext';
+import CartButton from '../components/CartButton';
+import { COLORS } from '../constants/theme';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+const headerStyle = { backgroundColor: COLORS.background } as const;
 
-export const unstable_settings = {
-  anchor: '(tabs)',
+const baseHeaderOptions = {
+  headerStyle,
+  headerTintColor: COLORS.text,
+  headerTitleStyle: { fontWeight: 'bold' as const },
+  headerShadowVisible: false,
+  headerRightContainerStyle: { paddingRight: 12 },
+  headerLeftContainerStyle: { paddingLeft: 12 },
 };
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
+function RootLayoutNav() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="login" options={{ headerShown: false }} />
+
+      <Stack.Screen
+        name="products/index"
+        options={{
+          ...baseHeaderOptions,
+          title: 'ImPortal',
+        }}
+      />
+
+      <Stack.Screen
+        name="products/[id]"
+        options={{
+          ...baseHeaderOptions,
+          title: 'Product Details',
+          headerRight: () => <CartButton />,
+        }}
+      />
+
+      <Stack.Screen
+        name="cart"
+        options={{
+          ...baseHeaderOptions,
+          title: 'My Cart',
+        }}
+      />
+    </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <SafeAreaProvider>
+      <CartProvider>
+        <AuthProvider>
+          <StatusBar style="light" />
+          <RootLayoutNav />
+        </AuthProvider>
+      </CartProvider>
+    </SafeAreaProvider>
   );
 }
